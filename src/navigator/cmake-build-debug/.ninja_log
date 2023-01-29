@@ -1,0 +1,11 @@
+# ninja log v5
+0	76	1674999288000000000	CMakeFiles/Navigator.dir/matrix/Matrix.cpp.o	c8c5352af3db7df8
+3	1115	1674999414000000000	CMakeFiles/Navigator.dir/test.cpp.o	c332b750859fae05
+3	1139	1674999414000000000	CMakeFiles/Navigator.dir/s21_graph/s21_graph_algorithms.cpp.o	eb6c183fbf2069e6
+3	1186	1674999414000000000	CMakeFiles/Navigator.dir/s21_graph/s21_graph.cpp.o	f8eb604ca3e99003
+1186	1243	1674999414000000000	Navigator	d10f33ba64210a0f
+3	69	1675001162000000000	CMakeFiles/Navigator.dir/matrix/Matrix.cpp.o	27234c915180a7ff
+2	893	1675001163000000000	CMakeFiles/Navigator.dir/test.cpp.o	b0991bc248526c46
+3	924	1675001163000000000	CMakeFiles/Navigator.dir/s21_graph/s21_graph_algorithms.cpp.o	6837bdee5c0618b2
+3	985	1675001163000000000	CMakeFiles/Navigator.dir/s21_graph/s21_graph.cpp.o	7cf01dcbc8f60c7d
+985	1052	1675001163000000000	Navigator	d10f33ba64210a0f

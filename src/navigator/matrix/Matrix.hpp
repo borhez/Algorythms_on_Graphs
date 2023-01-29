@@ -1,0 +1,21 @@
+#ifndef NAVIGATOR_MATRIX_HPP
+#define NAVIGATOR_MATRIX_HPP
+
+#include <cstdio>
+class Matrix {
+private:
+  Matrix();
+
+  std::size_t _sideSize;
+  double  **_matrix;
+public:
+  explicit Matrix(std::size_t size);
+  ~Matrix();
+
+  std::size_t getSideSize() const { return _sideSize; }
+
+  double& at(int row, int col) { return _matrix[row][col]; }
+};
+
+
+#endif //NAVIGATOR_MATRIX_HPP
