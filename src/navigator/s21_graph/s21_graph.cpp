@@ -9,6 +9,7 @@ int Graph::loadGraphFromFile(const std::string &filename) {
   std::string line;
   std::getline(fin, line);
   std::size_t size = std::stoi(line);
+  delete _m;
   _m = new Matrix(size);
 
   char *pStart;
@@ -20,7 +21,14 @@ int Graph::loadGraphFromFile(const std::string &filename) {
 	pStart = &(line[0]);
 	do
 	{
+	  try
+	  {
 	  _m->at(inRow, inCol) = std::stoi(pStart, &pEnd);
+	  }
+	  catch (std::exception &e)
+	  {
+		return error(e.what());
+	  }
 	  if (_m->at(inRow, inCol) < 0)
 		return error("negative distance");
 	  pStart += pEnd;
@@ -29,8 +37,9 @@ int Graph::loadGraphFromFile(const std::string &filename) {
 	   return error("wrong columns number");
   }
   if (inRow != size - 1)
-	 return error("wrong rows number");
+  	return error("wrong rows number");
   fin.close();
+  return 1;
 }
 int Graph::exportGraphToDot(const std::string &filename) {
   std::ofstream fout;
