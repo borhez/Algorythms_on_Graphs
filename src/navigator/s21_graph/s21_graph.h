@@ -13,8 +13,8 @@ class Graph {
 private:
     Matrix *_m;
 public:
-    Graph() : _m(nullptr) {}
-    ~Graph() { delete _m;}
+    ~Graph() { delete _m;}				// !!! как это тестить, если есть ток lesks?
+    Graph() : _m(new Matrix(0)) {}
 
     int loadGraphFromFile(const std::string &filename);
     int exportGraphToDot(const std::string &filename);

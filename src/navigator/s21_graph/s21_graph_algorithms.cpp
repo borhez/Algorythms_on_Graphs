@@ -7,9 +7,9 @@ int *GraphAlgorithms::depthFirstSearch(Graph &graph, int startVertex) {
   stack.init();
 
   stack.push(startVertex - 1);
-  visited[stack.peek()] = 1;
+  visited[stack.peek()] = 1;		// защита от зацикленных пунктов
   res[iRes++] = stack.peek() + 1;
-  while (stack.GetSize() > 0) // прерывестый граф
+  while (stack.GetSize() > 0)		// прерывестый граф
   {
 	for (int c = 0; c < graph.getVerticesNumber(); ++c)
 	{

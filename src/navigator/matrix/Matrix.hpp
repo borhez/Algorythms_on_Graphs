@@ -4,8 +4,6 @@
 #include <cstdio>
 class Matrix {
 private:
-  Matrix();
-
   std::size_t _sideSize;
   double  **_matrix;
 public:
