@@ -6,12 +6,16 @@
 #include <iostream>
 #include "../matrix/Matrix.hpp"
 
+#define UNDIRECT 	0
+#define DIRECT 		1
+
 #define FILENAME "test.txt"
 #define DOTFILENAME "test.dot"
 
 class Graph {
 private:
     Matrix *_m;
+	int _type = UNDIRECT;
 public:
     ~Graph() { delete _m;}				// !!! как это тестить, если есть ток lesks?
     Graph() : _m(new Matrix(0)) {}

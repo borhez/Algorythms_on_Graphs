@@ -11,8 +11,10 @@ void printArray(int *arr, int size)
 int main()
 {
   Graph graph;
-  graph.loadGraphFromFile(FILENAME);
+  if (graph.loadGraphFromFile(FILENAME) < 0)
+	return -1;
   int *array = GraphAlgorithms::depthFirstSearch(graph, 1);
   printArray(array, graph.getVerticesNumber());
-//  graph.exportGraphToDot(DOTFILENAME);
+  graph.exportGraphToDot(DOTFILENAME);
+  return 1;
 }

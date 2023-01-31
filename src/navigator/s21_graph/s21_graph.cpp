@@ -10,6 +10,7 @@ int Graph::loadGraphFromFile(const std::string &filename) {
   std::getline(fin, line);
   std::size_t size = std::stoi(line);
   delete _m;
+  _type = UNDIRECT;
   _m = new Matrix(size);
 
   char *pStart;
@@ -31,6 +32,8 @@ int Graph::loadGraphFromFile(const std::string &filename) {
 	  }
 	  if (_m->at(inRow, inCol) < 0)
 		return error("negative distance");
+	  if (inCol < inRow && _m->at(inCol, inRow) != _m->at(inRow, inCol))
+		_type = DIRECT;
 	  pStart += pEnd;
 	}while (*pStart && ++inCol < size);
 	if (inCol != size - 1)
@@ -45,21 +48,27 @@ int Graph::exportGraphToDot(const std::string &filename) {
   std::ofstream fout;
   fout.open(filename, std::ios::out | std::ios::trunc);
   if(!fout.is_open() || fout.bad())
-	 return error("exportFile error");
+  	return error("exportFile error");
 
-  // Очень спорно и непонятно!!!
-  fout << "graph graphname {" << std::endl;
+  if (_type == UNDIRECT)
+	fout << "graph";
+  else
+	fout << "digraph";
+  fout << " graphname {" << std::endl;
   for (int i = 0; i < _m->getSideSize(); ++i)
-	fout << i + 1 << ";" << std::endl;
-  //
+	fout << "    " << (char)('a' + i) << ";" << std::endl;
 
   for (int r = 0; r < _m->getSideSize(); ++r)
   {
 	for (int c = 0; c < _m->getSideSize(); ++c)
 	{
-	  if (c == r) continue;
-	  fout << r + 1 << " -- " << c + 1 << " [label="
-	  << _m->at(r,c) << "];" << std::endl;
+	  if (_m->at(r, c) > 0)
+	  {
+		if (_m->at(c, r) == _m->at(r, c) && r < c)
+		  fout << "    " << (char)('a' + r) << " -- " << (char)('a' + c) << ";" << std::endl;
+		else if (_m->at(c, r) != _m->at(r, c))
+		  fout << "    " << (char)('a' + r) << " -> " << (char)('a' + c) << ";" << std::endl;
+	  }
 	}
   }
   fout << "}";
