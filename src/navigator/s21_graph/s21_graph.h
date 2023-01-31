@@ -9,8 +9,8 @@
 #define UNDIRECT 	0
 #define DIRECT 		1
 
-#define FILENAME "test.txt"
-#define DOTFILENAME "test.dot"
+#define FILENAME "complex_test.txt"
+#define DOTFILENAME "complex_test.dot"
 
 class Graph {
 private:

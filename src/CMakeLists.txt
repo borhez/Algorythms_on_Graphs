@@ -13,5 +13,6 @@ add_executable(Navigator
         navigator/s21_graph/s21_graph_algorithms.h navigator/s21_graph/s21_graph_algorithms.cpp
         navigator/stack/Stack.hpp
         test/graphTest.cpp
+        test/graphAlgorithmsTest.cpp
         )
 target_link_libraries(Navigator gtest gtest_main)
