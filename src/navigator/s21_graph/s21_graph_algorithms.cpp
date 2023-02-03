@@ -28,24 +28,30 @@ std::vector<int> GraphAlgorithms::depthFirstSearch(Graph &graph, int startVertex
 }
 double GraphAlgorithms::getShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
   std::vector<double> paths(graph.getVerticesNumber(), std::numeric_limits<double>::infinity());
+  std::vector<bool> visited(graph.getVerticesNumber(), false);
 
-  double minDist = std::numeric_limits<double>::infinity();
-  auto minEl = paths.begin();
+  auto minEl = paths.begin() + vertex1 - 1;
   int cur = vertex1 - 1;
   paths[cur] = 0;
+  visited[cur] = true;
+
   // защита и на vertex1 == vertex2 и на отсутствие пути к вершине
   for (int finds = 0; finds < graph.getVerticesNumber() && cur != vertex2 - 1; ++finds )
   {
 	for (int c = 0; c < graph.getVerticesNumber(); ++c)
 	{
 	  double dist = graph.getDist(cur, c);
-	  if (dist == 0 || cur == c) continue;
+	  if (!(dist == 0 || cur == c || visited[c]))
+	  	paths[c] = std::min(paths[c], paths[cur] + dist);
 
-	  paths[c] = std::min(paths[c], paths[cur] + dist);
-	  if (paths[c] - *minEl < 0 || *minEl == 0) // минимум из оставшихся
+	  if ((paths[c] - *minEl < 0 || *minEl == 0) && !visited[c])
 	  	minEl = paths.begin() + c;
 	}
 	cur = minEl - paths.begin();
+	minEl = paths.begin() + vertex1 - 1;
+	visited[cur] = true;
   }
-  return paths[cur];
+  if (cur == vertex2 - 1)
+  	return paths[cur];
+  return std::numeric_limits<double>::infinity();
 }

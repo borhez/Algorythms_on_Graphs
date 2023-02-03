@@ -41,4 +41,11 @@ TEST_F(GraphAlgorithmsFixture, getShortestPathBetweenVertices)
 {
   ASSERT_EQ(1, _g1->loadGraphFromFile("unit_test_files/deicstra.txt"));
   EXPECT_EQ(60, GraphAlgorithms::getShortestPathBetweenVertices(*_g1, 1, 5));
+  EXPECT_EQ(30, GraphAlgorithms::getShortestPathBetweenVertices(*_g1, 4, 5));
+
+  EXPECT_EQ(std::numeric_limits<double>::infinity(),
+			GraphAlgorithms::getShortestPathBetweenVertices(*_g1, 1, 6));
+
+  EXPECT_EQ(0,
+			GraphAlgorithms::getShortestPathBetweenVertices(*_g1, 1, 1));
 }
