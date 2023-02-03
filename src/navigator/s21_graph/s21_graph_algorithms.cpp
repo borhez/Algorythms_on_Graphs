@@ -26,6 +26,7 @@ std::vector<int> GraphAlgorithms::depthFirstSearch(Graph &graph, int startVertex
   }
   return res;
 }
+
 double GraphAlgorithms::getShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
   std::vector<double> paths(graph.getVerticesNumber(), std::numeric_limits<double>::infinity());
   std::vector<bool> visited(graph.getVerticesNumber(), false);
@@ -54,4 +55,36 @@ double GraphAlgorithms::getShortestPathBetweenVertices(Graph &graph, int vertex1
   if (cur == vertex2 - 1)
   	return paths[cur];
   return std::numeric_limits<double>::infinity();
+}
+std::vector<std::vector<double>> GraphAlgorithms::getShortestPathsBetweenAllVertices(Graph &graph) {
+  std::size_t sideSize = graph.getVerticesNumber();
+  std::vector<std::vector<double>> memo(sideSize);
+  std::vector<std::vector<double>> prev(sideSize);
+  for (int i = 0; i < sideSize; ++i)
+  {
+	memo[i].resize(sideSize);
+	prev[i].resize(sideSize);
+	for (int j = 0; j < sideSize; ++j)
+	{
+	  if (i == j)
+		prev[i][j] = 0;
+	  else if (graph.getDist(i,j) == 0)
+		prev[i][j] = std::numeric_limits<double>::infinity();
+	  else
+		prev[i][j] = graph.getDist(i, j);
+	}
+  }
+
+  for (int k = 1; k < sideSize; ++k)
+  {
+	for (int i = 0; i < sideSize; ++i)
+	{
+	  for (int j = 0; j < sideSize; ++j)
+	  {
+		  memo[i][j] = std::min(prev[i][j], prev[i][k] + prev[k][j]);
+		  prev[i][j] = memo[i][j];
+	  }
+	}
+  }
+  return memo;
 }
