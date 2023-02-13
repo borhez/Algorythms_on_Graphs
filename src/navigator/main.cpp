@@ -20,12 +20,12 @@ int main()
 {
   Graph graph;
   // if (graph.loadGraphFromFile(FILENAME) < 0)
-  if (graph.loadGraphFromFile("../unit_test_files/digraph.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/proba1.txt") < 0)
 	  return -1;
   std::vector<int> array = GraphAlgorithms::depthFirstSearch(graph, 1);
   // int *array = GraphAlgorithms::depthFirstSearch(graph, 1);
   printArray(array, graph.getVerticesNumber());
   // graph.exportGraphToDot(DOTFILENAME);
-  graph.exportGraphToDot("../unit_test_files/digraph.dot");
+  graph.exportGraphToDot("../unit_test_files/proba1.dot");
   return 1;
 }
