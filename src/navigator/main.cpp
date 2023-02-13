@@ -1,5 +1,6 @@
 #include "s21_graph/s21_graph.h"
 #include "s21_graph/s21_graph_algorithms.h"
+#include "matrix/Matrix.hpp"
 
 // void printArray(int *arr, int size)
 // {
@@ -19,6 +20,9 @@ void printArray(std::vector<int> arr, int size)
 int main()
 {
   Graph graph;
+  Matrix mtrx_ostTree = GraphAlgorithms::getLeastSpanningTree(graph);
+  printf("main:24\n");
+  /*
   // if (graph.loadGraphFromFile(FILENAME) < 0)
   if (graph.loadGraphFromFile("../unit_test_files/proba1.txt") < 0)
 	  return -1;
@@ -27,5 +31,6 @@ int main()
   printArray(array, graph.getVerticesNumber());
   // graph.exportGraphToDot(DOTFILENAME);
   graph.exportGraphToDot("../unit_test_files/proba1.dot");
+  */
   return 1;
 }

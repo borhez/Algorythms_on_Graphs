@@ -7,7 +7,7 @@ private:
   std::size_t _sideSize;
   double  **_matrix;
 public:
-  explicit Matrix(std::size_t size);
+  Matrix(std::size_t size);
   ~Matrix();
 
   std::size_t getSideSize() const { return _sideSize; }

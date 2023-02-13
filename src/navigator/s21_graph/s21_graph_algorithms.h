@@ -13,6 +13,7 @@ class GraphAlgorithms {
   // до vertex2 можно и не дойти до vertex2
   static double getShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
   static std::vector<std::vector<double>> getShortestPathsBetweenAllVertices(Graph &graph);
+  static Matrix getLeastSpanningTree(Graph &graph);
 };
 
 #endif //NAVIGATOR_SRC_GRAPHALGORITHMS_H_
