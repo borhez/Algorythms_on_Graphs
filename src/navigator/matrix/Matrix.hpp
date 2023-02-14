@@ -13,6 +13,8 @@ public:
   std::size_t getSideSize() const { return _sideSize; }
 
   double& at(size_t row, size_t col) { return _matrix[row][col]; }
+
+  int getElem(size_t row, size_t col) { return _matrix[row][col]; }
 };
 
 

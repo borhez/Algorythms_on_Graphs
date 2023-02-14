@@ -89,24 +89,97 @@ std::vector<std::vector<double>> GraphAlgorithms::getShortestPathsBetweenAllVert
   return memo;
 }
 
-void	printGraphMatrix(Graph &graph)
+
+void fillHelpMatrix(std::vector<std::vector<int>>& helpMatrix, Graph graph, size_t nVertices)
 {
-	for (size_t i = 0; i < (graph.getVerticesNumber()); i++)
+	for (size_t i = 0; i < nVertices; i++)
 	{
-		for (size_t j = 0; j < graph.getVerticesNumber(); j++)
+		for (size_t j = 0; j < nVertices; j++)
 		{
-			printf("%d ", graph.getMatrxElem(i, j));
+			helpMatrix[i][j] = graph.getMatrxElem(i, j);
+		}
+	}
+
+}
+
+void printMatrixVector(std::vector<std::vector<int>>& mtrx, size_t size)
+{
+	for (size_t i = 0; i < size; i++)
+	{
+		for (size_t j = 0; j < size; j++)
+		{
+			printf("%d ", mtrx[i][j]);
 		}
 		printf("\n");
 	}
-	
 }
 
-int *GraphAlgorithms::getLeastSpanningTree(Graph &graph)
+void printVectorElements(std::vector<int> vec)
 {
-	printf("getLeastSpanningTree(Graph &graph)\n");
-	printf("matrix from file:\n");
-	printGraphMatrix(graph);
-	int *mtrxOstTree;
+	printf("\nVector:");
+	for (size_t i=0; i < vec.size(); i++)
+	{
+		printf("%d ", vec.at(i));
+	}
+	printf("\n");
+}
+
+std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph)
+{
+	printf("in func_getLeastSpanningTree(Graph &graph)\n");
+	size_t nVertices = graph.getVerticesNumber();
+	std::vector<std::vector<int>> mtrxOstTree(nVertices);
+	std::vector<std::vector<int>> helpMatrix(nVertices);
+	
+	for (size_t i = 0; i < nVertices; i++)
+	{
+		mtrxOstTree[i].reserve(nVertices);
+		helpMatrix[i].reserve(nVertices);
+	}
+	
+
+	//fill matrix from graph-matrix:
+	for (size_t i = 0; i < nVertices; i++)
+	{
+		for (size_t j = 0; j < nVertices; j++)
+		{
+			//Избавляюсь от петлей (зануляю диагональные элементы)
+			if (i != j)
+				helpMatrix[i][j] = graph.getMatrxElem(i, j);
+			else { helpMatrix[i][j] = 0; }
+			mtrxOstTree[i][j] = 0;
+		}
+	}
+	printMatrixVector(helpMatrix, nVertices);
+
+
+
+	/*	2 vectors для хранения вершин. На каждом шаге буду добавлять
+		и убавлять вершину из этих векторов, при построении остова дерева
+	*/
+	int	minWeight;
+	std::vector<int> unconnectedVert(nVertices);
+	std::vector<int> connectedVert(0);
+	for (size_t i = 0; i < nVertices; i++)
+	{
+		unconnectedVert[i] = i;
+	}
+	printVectorElements(unconnectedVert);
+	// printVectorElements(connectedVert);
+
+//хочу удалить конкретный элемент вектора. как?
+
+
+
+
+	//Search ostovTree from the 1st vertex
+	//Stop search when all vertices will be connected;
+	// while (unconnectedVert.size() > 0)
+	// {
+
+
+	// }
+
+
 	return (mtrxOstTree);
 }

@@ -16,18 +16,57 @@ void printArray(std::vector<int> arr, int size)
   std::cout << std::endl;
 }
 
+void	printGraphMatrix(Graph &graph)
+{
+	for (size_t i = 0; i < (graph.getVerticesNumber()); i++)
+	{
+		for (size_t j = 0; j < graph.getVerticesNumber(); j++)
+		{
+			printf("%d ", graph.getMatrxElem(i, j));
+		}
+		printf("\n");
+	}
+}
+
+static void printMatrixVector(std::vector<std::vector<int>>& mtrx, size_t size)
+{
+  printf("Ostov_Tree_Matrix\n");
+	for (size_t i = 0; i < size; i++)
+	{
+		for (size_t j = 0; j < size; j++)
+		{
+			printf("%d ", mtrx[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+
 
 int main()
 {
   Graph graph;
-  printf("main:24\n");
 
   if (graph.loadGraphFromFile("../unit_test_files/proba1.txt") < 0)
 	  return -1;
+  printf("matrix from file:\n");
+  printGraphMatrix(graph);
   // std::vector<int> array = GraphAlgorithms::depthFirstSearch(graph, 1);
   // printArray(array, graph.getVerticesNumber());
   // graph.exportGraphToDot("../unit_test_files/proba1.dot");
 
-  int *mtrx_ostTree = GraphAlgorithms::getLeastSpanningTree(graph);
+  std::vector<std::vector<int>> mtrxOstTree = GraphAlgorithms::getLeastSpanningTree(graph);
+	
+  /*
+  //print Matrix
+  for (size_t i = 0; i < graph.getVerticesNumber(); i++)
+	{
+		for (size_t j = 0; j < graph.getVerticesNumber(); j++)
+		{
+			printf("%d ", mtrxOstTree[i][j]);
+		}
+	}
+  */
+  printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
   return 1;
 }
