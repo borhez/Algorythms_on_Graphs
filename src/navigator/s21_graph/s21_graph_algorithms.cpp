@@ -89,9 +89,24 @@ std::vector<std::vector<double>> GraphAlgorithms::getShortestPathsBetweenAllVert
   return memo;
 }
 
-Matrix GraphAlgorithms::getLeastSpanningTree(Graph &graph)
+void	printGraphMatrix(Graph &graph)
+{
+	for (size_t i = 0; i < (graph.getVerticesNumber()); i++)
+	{
+		for (size_t j = 0; j < graph.getVerticesNumber(); j++)
+		{
+			printf("%d ", graph.getMatrxElem(i, j));
+		}
+		printf("\n");
+	}
+	
+}
+
+int *GraphAlgorithms::getLeastSpanningTree(Graph &graph)
 {
 	printf("getLeastSpanningTree(Graph &graph)\n");
-	Matrix mtrx_ostTree(graph.getVerticesNumber());
-	return (mtrx_ostTree);
+	printf("matrix from file:\n");
+	printGraphMatrix(graph);
+	int *mtrxOstTree;
+	return (mtrxOstTree);
 }

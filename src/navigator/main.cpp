@@ -20,17 +20,14 @@ void printArray(std::vector<int> arr, int size)
 int main()
 {
   Graph graph;
-  Matrix mtrx_ostTree = GraphAlgorithms::getLeastSpanningTree(graph);
   printf("main:24\n");
-  /*
-  // if (graph.loadGraphFromFile(FILENAME) < 0)
+
   if (graph.loadGraphFromFile("../unit_test_files/proba1.txt") < 0)
 	  return -1;
-  std::vector<int> array = GraphAlgorithms::depthFirstSearch(graph, 1);
-  // int *array = GraphAlgorithms::depthFirstSearch(graph, 1);
-  printArray(array, graph.getVerticesNumber());
-  // graph.exportGraphToDot(DOTFILENAME);
-  graph.exportGraphToDot("../unit_test_files/proba1.dot");
-  */
+  // std::vector<int> array = GraphAlgorithms::depthFirstSearch(graph, 1);
+  // printArray(array, graph.getVerticesNumber());
+  // graph.exportGraphToDot("../unit_test_files/proba1.dot");
+
+  int *mtrx_ostTree = GraphAlgorithms::getLeastSpanningTree(graph);
   return 1;
 }
