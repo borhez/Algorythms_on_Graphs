@@ -124,6 +124,12 @@ void printVectorElements(std::vector<int> vec)
 	printf("\n");
 }
 
+	template <typename T>
+void remove(std::vector<T>& v, size_t index) {
+    v.erase(v.begin() + index);
+}
+
+
 std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph)
 {
 	printf("in func_getLeastSpanningTree(Graph &graph)\n");
@@ -166,10 +172,17 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	}
 	printVectorElements(unconnectedVert);
 	// printVectorElements(connectedVert);
-
-//хочу удалить конкретный элемент вектора. как?
-
-
+	//хочу удалить конкретный элемент вектора. как? так:
+	unconnectedVert.erase(unconnectedVert.begin() + 3);
+	printVectorElements(unconnectedVert);
+	//или так:
+	remove(unconnectedVert, 3);
+	printVectorElements(unconnectedVert);
+	remove(unconnectedVert, 0);
+		remove(unconnectedVert, 1);
+	printVectorElements(unconnectedVert);
+		remove(unconnectedVert, 0);
+	printVectorElements(unconnectedVert);
 
 
 	//Search ostovTree from the 1st vertex
