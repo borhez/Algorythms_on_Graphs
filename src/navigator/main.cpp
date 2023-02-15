@@ -47,7 +47,7 @@ int main()
 {
   Graph graph;
 
-  if (graph.loadGraphFromFile("../unit_test_files/proba1.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/prima7.txt") < 0)
 	  return -1;
   printf("matrix from file:\n");
   printGraphMatrix(graph);

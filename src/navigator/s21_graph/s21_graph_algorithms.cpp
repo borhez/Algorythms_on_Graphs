@@ -91,40 +91,39 @@ std::vector<std::vector<double>> GraphAlgorithms::getShortestPathsBetweenAllVert
 }
 
 
-void fillHelpMatrix(std::vector<std::vector<int>>& helpMatrix, Graph graph, size_t nVertices)
-{
-	for (size_t i = 0; i < nVertices; i++)
-	{
-		for (size_t j = 0; j < nVertices; j++)
-		{
-			helpMatrix[i][j] = graph.getMatrxElem(i, j);
-		}
-	}
+// void fillHelpMatrix(std::vector<std::vector<int>>& helpMatrix, Graph graph, size_t nVertices)
+// {
+// 	for (size_t i = 0; i < nVertices; i++)
+// 	{
+// 		for (size_t j = 0; j < nVertices; j++)
+// 		{
+// 			helpMatrix[i][j] = graph.getMatrxElem(i, j);
+// 		}
+// 	}
+// }
 
-}
+// void printMatrix2dVector(std::vector<std::vector<int>>& mtrx, size_t size)
+// {
+// 	for (size_t i = 0; i < size; i++)
+// 	{
+// 		for (size_t j = 0; j < size; j++)
+// 		{
+// 			printf("%d ", mtrx[i][j]);
+// 		}
+// 		printf("\n");
+// 	}
+// 	printf("\n");
+// }
 
-void printMatrix2dVector(std::vector<std::vector<int>>& mtrx, size_t size)
-{
-	for (size_t i = 0; i < size; i++)
-	{
-		for (size_t j = 0; j < size; j++)
-		{
-			printf("%d ", mtrx[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
-
-void printVectorElements(std::vector<int>& vec)
-{
-	printf("Vector:");
-	for (size_t i=0; i < vec.size(); i++)
-	{
-		printf("%d ", vec.at(i));
-	}
-	printf("\n\n");
-}
+// void printVectorElements(std::vector<int>& vec)
+// {
+// 	printf("Vector:");
+// 	for (size_t i=0; i < vec.size(); i++)
+// 	{
+// 		printf("%d ", vec.at(i));
+// 	}
+// 	printf("\n\n");
+// }
 
 template <typename T>
 void remove(std::vector<T>& v, size_t index)
@@ -156,10 +155,10 @@ bool checkAllElemsAreZero(std::vector<int> v)
 }
 
 
-
+//Алгоритм Прима — алгоритм построения минимального остовного дерева взвешенного связного неориентированного графа.
 std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph)
 {
-	printf("in func_getLeastSpanningTree(Graph &graph)\n");
+	// printf("in func_getLeastSpanningTree(Graph &graph)\n");
 	size_t nVertices = graph.getVerticesNumber();
 	std::vector<std::vector<int>> mtrxOstovTree(nVertices);
 	std::vector<std::vector<int>> helpMatrix(nVertices);
@@ -219,9 +218,10 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	int n = 0;
 	int	minWeight;
 	while (n < nVertices - 1)
-	{printf("	Next Step!\nhelp_matrix:\n");
-			printMatrix2dVector(helpMatrix, nVertices);
-			printVectorElements(connectedVert);
+	{
+			// printf("	Next Step!\nhelp_matrix:\n");
+			// printMatrix2dVector(helpMatrix, nVertices);
+			// printVectorElements(connectedVert);
 
 		minWeight = std::numeric_limits<int>::max();
 		for (size_t i = 0; i < connectedVert.size(); i++)
@@ -240,25 +240,22 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 				}
 			}
 		}
-		printf("rowTemp=%d; colTemp=%d; iTemp=%d\n", tempRow, tempCol, iTemp);
+		// printf("rowTemp=%d; colTemp=%d; iTemp=%d\n", tempRow, tempCol, iTemp);
 		mtrxOstovTree[tempRow][tempCol] = helpMatrix[tempRow][tempCol];
 		helpMatrix[tempRow][tempCol] = 0;
 		helpMatrix[tempCol][tempRow] = 0;
-				printf("\nafter edit, help matrix:\n");
-		printMatrix2dVector(helpMatrix, nVertices);
-						printf("\n TreeMatrix:\n");
-		printMatrix2dVector(mtrxOstovTree, nVertices);
+		// 		printf("\nafter edit, help matrix:\n");
+		// printMatrix2dVector(helpMatrix, nVertices);
+		// 				printf("\n TreeMatrix:\n");
+		// printMatrix2dVector(mtrxOstovTree, nVertices);
 
 
 		if (checkAllElemsAreZero(helpMatrix[tempRow]))
 			remove(connectedVert, iTemp);
 		if (!checkAllElemsAreZero(helpMatrix[tempCol]))
 			connectedVert.push_back(tempCol);
-		printVectorElements(connectedVert);
+		// printVectorElements(connectedVert);
 		n++;
-
 	}
-
-
 	return (mtrxOstovTree);
 }
