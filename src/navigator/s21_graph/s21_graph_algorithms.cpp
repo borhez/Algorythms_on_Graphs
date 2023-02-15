@@ -102,7 +102,7 @@ void fillHelpMatrix(std::vector<std::vector<int>>& helpMatrix, Graph graph, size
 
 }
 
-void printMatrixVector(std::vector<std::vector<int>>& mtrx, size_t size)
+void printMatrix2dVector(std::vector<std::vector<int>>& mtrx, size_t size)
 {
 	for (size_t i = 0; i < size; i++)
 	{
@@ -124,11 +124,23 @@ void printVectorElements(std::vector<int> vec)
 	printf("\n");
 }
 
-	template <typename T>
-void remove(std::vector<T>& v, size_t index) {
+template <typename T>
+void remove(std::vector<T>& v, size_t index)
+{
     v.erase(v.begin() + index);
 }
 
+int	findStartVert(std::vector<std::vector<int>>& helpMatrix, size_t nVertices)
+{
+	for (size_t row = 0; row < nVertices; row++)
+	{
+		for (size_t col = 0; col < nVertices; col++)
+		{
+			if (helpMatrix[row][col] != 0)
+				return row;
+		}
+	}
+}
 
 std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph)
 {
@@ -156,7 +168,7 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 			mtrxOstTree[i][j] = 0;
 		}
 	}
-	printMatrixVector(helpMatrix, nVertices);
+	printMatrix2dVector(helpMatrix, nVertices);
 
 
 
@@ -170,19 +182,17 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	{
 		unconnectedVert[i] = i;
 	}
-	printVectorElements(unconnectedVert);
+	// printVectorElements(unconnectedVert);
 	// printVectorElements(connectedVert);
-	//хочу удалить конкретный элемент вектора. как? так:
-	unconnectedVert.erase(unconnectedVert.begin() + 3);
-	printVectorElements(unconnectedVert);
-	//или так:
-	remove(unconnectedVert, 3);
-	printVectorElements(unconnectedVert);
-	remove(unconnectedVert, 0);
-		remove(unconnectedVert, 1);
-	printVectorElements(unconnectedVert);
-		remove(unconnectedVert, 0);
-	printVectorElements(unconnectedVert);
+	
+	
+
+	//ищем первую ненулевую вершину
+	int startVert = findStartVert(helpMatrix, nVertices);
+	// printf("%d\n", helpMatrix[startVert][3]);
+	
+
+
 
 
 	//Search ostovTree from the 1st vertex
