@@ -118,12 +118,12 @@ void printMatrix2dVector(std::vector<std::vector<int>>& mtrx, size_t size)
 
 void printVectorElements(std::vector<int>& vec)
 {
-	printf("\nVector:");
+	printf("Vector:");
 	for (size_t i=0; i < vec.size(); i++)
 	{
 		printf("%d ", vec.at(i));
 	}
-	printf("\n");
+	printf("\n\n");
 }
 
 template <typename T>
@@ -218,8 +218,8 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	int foundVert, tempRow, tempCol, iTemp;
 	int n = 0;
 	int	minWeight;
-	while (n < nVertices)
-	{
+	while (n < nVertices - 1)
+	{printf("	Next Step!\nhelp_matrix:\n");
 			printMatrix2dVector(helpMatrix, nVertices);
 			printVectorElements(connectedVert);
 
@@ -229,6 +229,8 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 			int row = connectedVert.at(i);
 			for (size_t col = 0; col < nVertices; col++)
 			{
+				if ( std::find(connectedVert.begin(), connectedVert.end(), col)!=connectedVert.end())
+					continue;
 				if (helpMatrix[row][col] > 0 && helpMatrix[row][col] < minWeight)
 				{
 					minWeight = helpMatrix[row][col];
@@ -242,12 +244,14 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 		mtrxOstovTree[tempRow][tempCol] = helpMatrix[tempRow][tempCol];
 		helpMatrix[tempRow][tempCol] = 0;
 		helpMatrix[tempCol][tempRow] = 0;
-				printf("\nafter edit");
-		printVectorElements(helpMatrix[tempRow]);
+				printf("\nafter edit, help matrix:\n");
+		printMatrix2dVector(helpMatrix, nVertices);
+						printf("\n TreeMatrix:\n");
+		printMatrix2dVector(mtrxOstovTree, nVertices);
+
 
 		if (checkAllElemsAreZero(helpMatrix[tempRow]))
 			remove(connectedVert, iTemp);
-		printVectorElements(connectedVert);
 		if (!checkAllElemsAreZero(helpMatrix[tempCol]))
 			connectedVert.push_back(tempCol);
 		printVectorElements(connectedVert);
