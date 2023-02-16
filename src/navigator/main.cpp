@@ -47,7 +47,7 @@ int main()
 {
   Graph graph;
 
-  if (graph.loadGraphFromFile("../unit_test_files/prima7.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/prima5.txt") < 0)
 	  return -1;
   printf("matrix from file:\n");
   printGraphMatrix(graph);
@@ -56,17 +56,6 @@ int main()
   // graph.exportGraphToDot("../unit_test_files/proba1.dot");
 
   std::vector<std::vector<int>> mtrxOstTree = GraphAlgorithms::getLeastSpanningTree(graph);
-	
-  /*
-  //print Matrix
-  for (size_t i = 0; i < graph.getVerticesNumber(); i++)
-	{
-		for (size_t j = 0; j < graph.getVerticesNumber(); j++)
-		{
-			printf("%d ", mtrxOstTree[i][j]);
-		}
-	}
-  */
   printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
   return 1;
 }

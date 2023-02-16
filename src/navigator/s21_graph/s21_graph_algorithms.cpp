@@ -125,8 +125,8 @@ std::vector<std::vector<double>> GraphAlgorithms::getShortestPathsBetweenAllVert
 // 	printf("\n\n");
 // }
 
-template <typename T>
-void remove(std::vector<T>& v, size_t index)
+// template <typename T>
+void remove(std::vector<int>& v, size_t index)
 {
     v.erase(v.begin() + index);
 }
@@ -187,15 +187,15 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 
 
 
-	/*	2 vectors для хранения вершин. На каждом шаге буду добавлять
+	/*	2vector для хранения  вершин. На каждом шаге буду добавлять
 		и убавлять вершину из этих векторов, при построении остова дерева
 	*/
-	std::vector<int> unconnectedVert(nVertices);
+	// std::vector<int> unconnectedVert(nVertices);
 	std::vector<int> connectedVert(0);
-	for (size_t i = 0; i < nVertices; i++)
-	{
-		unconnectedVert[i] = i;
-	}
+	// for (size_t i = 0; i < nVertices; i++)
+	// {
+	// 	unconnectedVert[i] = i;
+	// }
 	// printVectorElements(unconnectedVert);
 	// printVectorElements(connectedVert);
 	
@@ -206,7 +206,7 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	// printf("%d\n", helpMatrix[startVert][3]);
 	
 	//удаляю стартовую вершину из unconnected, добавляю в connected
-	remove(unconnectedVert, startVert);
+	// remove(unconnectedVert, startVert);
 	connectedVert.push_back(startVert);
 	// printVectorElements(unconnectedVert);
 
@@ -214,7 +214,7 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 
 	//Search ostovTree from the 1st vertex
 	//Stop search when all vertices will be connected;
-	int foundVert, tempRow, tempCol, iTemp;
+	int tempRow, tempCol, iTemp;
 	int n = 0;
 	int	minWeight;
 	while (n < nVertices - 1)
