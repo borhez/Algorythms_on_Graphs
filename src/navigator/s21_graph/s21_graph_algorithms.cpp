@@ -158,7 +158,6 @@ bool checkAllElemsAreZero(std::vector<int> v)
 //Алгоритм Прима — алгоритм построения минимального остовного дерева взвешенного связного неориентированного графа.
 std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph)
 {
-	// printf("in func_getLeastSpanningTree(Graph &graph)\n");
 	size_t nVertices = graph.getVerticesNumber();
 	std::vector<std::vector<int>> mtrxOstovTree(nVertices);
 	std::vector<std::vector<int>> helpMatrix(nVertices);
@@ -176,14 +175,14 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 		for (size_t j = 0; j < nVertices; j++)
 		{
 			//Избавляюсь от петлей (зануляю диагональные элементы)
+			//заполняю вспомогательную матрицу (копия загруженной из файла)
+			//заполняю нулями матрицу остовного дерева
 			if (i != j)
 				helpMatrix[i][j] = graph.getMatrxElem(i, j);
 			else { helpMatrix[i][j] = 0; }
 			mtrxOstovTree[i][j] = 0;
 		}
 	}
-	// printf("обнулил диагональные элементы\n");
-	// printMatrix2dVector(helpMatrix, nVertices);
 
 
 
@@ -214,6 +213,7 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 
 	//Search ostovTree from the 1st vertex
 	//Stop search when all vertices will be connected;
+	//на каждой итерации цикла добавляется одна вершина
 	int tempRow, tempCol, iTemp;
 	int n = 0;
 	int	minWeight;
@@ -253,8 +253,7 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 		if (checkAllElemsAreZero(helpMatrix[tempRow]))
 			remove(connectedVert, iTemp);
 		if (!checkAllElemsAreZero(helpMatrix[tempCol]))
-			connectedVert.push_back(tempCol);
-		// printVectorElements(connectedVert);
+		 	connectedVert.push_back(tempCol);//можно оставить только эту строчку. а эти две проверки удалить
 		n++;
 	}
 	return (mtrxOstovTree);
