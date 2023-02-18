@@ -41,21 +41,35 @@ static void printMatrixVector(std::vector<std::vector<int>>& mtrx, size_t size)
 	}
 }
 
-
+void printTsmRes(TsmResult &tsm, int nVert)
+{
+	if (tsm.vertices)
+	{
+		for (size_t i = 0; i < nVert; i++)
+		{
+			std::cout<<tsm.vertices[i]<<std::endl;
+		}
+	}
+}
 
 int main()
 {
   Graph graph;
+  
 
   if (graph.loadGraphFromFile("../unit_test_files/prima5.txt") < 0)
 	  return -1;
-  printf("matrix from file:\n");
-  printGraphMatrix(graph);
-  // std::vector<int> array = GraphAlgorithms::depthFirstSearch(graph, 1);
-  // printArray(array, graph.getVerticesNumber());
-  // graph.exportGraphToDot("../unit_test_files/proba1.dot");
+//   printf("matrix from file:\n\n");
+//   printGraphMatrix(graph);
+//   std::vector<int> array = GraphAlgorithms::depthFirstSearch(graph, 1);
+//   printArray(array, graph.getVerticesNumber());
+//   graph.exportGraphToDot("../unit_test_files/proba1.dot");
 
-  std::vector<std::vector<int>> mtrxOstTree = GraphAlgorithms::getLeastSpanningTree(graph);
-  printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
+//   std::vector<std::vector<int>> mtrxOstTree = GraphAlgorithms::getLeastSpanningTree(graph);
+//   printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
+  
+ TsmResult tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
+  printTsmRes(tsm, graph.getVerticesNumber());
+delete[] tsm.vertices;
   return 1;
 }

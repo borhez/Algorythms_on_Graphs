@@ -258,3 +258,23 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	}
 	return (mtrxOstovTree);
 }
+
+
+void checkGraph(Graph &graph)
+{
+	printf("graph is not checked\n");
+}
+
+TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
+{
+	checkGraph(graph);
+	TsmResult ret;
+	ret.distance = 10;
+	ret.vertices = new int[graph.getVerticesNumber()];
+	for (size_t i = 0; i < graph.getVerticesNumber(); i++)
+	{
+		ret.vertices[i] = i;
+	}
+		
+	return ret;
+}
