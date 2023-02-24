@@ -69,7 +69,7 @@ int main()
 //   printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
   
  TsmResult tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
-  printTsmRes(tsm, graph.getVerticesNumber());
-delete[] tsm.vertices;
+//   printTsmRes(tsm, graph.getVerticesNumber());
+// delete[] tsm.vertices;
   return 1;
 }

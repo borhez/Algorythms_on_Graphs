@@ -265,16 +265,52 @@ void checkGraph(Graph &graph)
 	printf("graph is not checked\n");
 }
 
+void funcInit()
+{
+	printf("Init\n");
+}
+int antsGoGoGo()
+{
+}
+
+void restartAnts()
+{
+
+}
+
+void  getNewValues()
+{
+
+}
+
 TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 {
 	checkGraph(graph);
 	TsmResult ret;
-	ret.distance = 10;
-	ret.vertices = new int[graph.getVerticesNumber()];
-	for (size_t i = 0; i < graph.getVerticesNumber(); i++)
-	{
-		ret.vertices[i] = i;
-	}
+	size_t nVerts = graph.getVerticesNumber();
+	size_t nAnts = nVerts;
+	size_t nTimes = 20 * nVerts;
+	double alpha = 1;
+	double beta = 1;
+	double rho = 0.55;
+	double qVal = 100;
+	double initPheromone = 1/nVerts;
+
+	// ret.distance = 10;
+	// ret.vertices = new int[graph.getVerticesNumber()];
+	// for (size_t i = 0; i < graph.getVerticesNumber(); i++)
+	// {
+	// 	ret.vertices[i] = i;
+	// }
 		
+
+	funcInit();
+	for (size_t i=0; i < nTimes; i++)
+	{
+		if (antsGoGoGo() == 0)
+			getNewValues();
+		if (i != nTimes)
+			restartAnts();
+	}
 	return ret;
 }
