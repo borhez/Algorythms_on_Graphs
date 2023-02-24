@@ -46,7 +46,7 @@ void printTsmRes(TsmResult &tsm, int nVert)
 	if (tsm.vertices)
 	{
 		printf("bestWay:");
-		for (size_t i = 0; i < nVert; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
 			printf(" %d", tsm.vertices[i]);
 		}
@@ -70,8 +70,8 @@ int main()
 //   std::vector<std::vector<int>> mtrxOstTree = GraphAlgorithms::getLeastSpanningTree(graph);
 //   printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
   
- TsmResult tsm;
- 	tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
+  TsmResult tsm;
+  tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
   printTsmRes(tsm, graph.getVerticesNumber());
 delete[] tsm.vertices;
   return 1;

@@ -262,13 +262,9 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 
 void checkGraph(Graph &graph)
 {
-	printf("graph is not checked\n");
+	// printf("graph is not checked\n");
 }
 
-// void funcInit()
-// {
-// 	printf("Init\n");
-// }
 int antsGoGoGo()
 {
 }
@@ -336,9 +332,9 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	//return:
 	ret.distance=-1;
 	ret.vertices = new int [nVerts];
-	for (int i = 0; i < nVerts; i++)
+	for (int i = 0; i < ants[1].unvisited.size(); i++)
 	{//скопировать из best ant.visited
-		ret.vertices[i] = 1;
+		ret.vertices[i] = ants[1].unvisited[i];
 	}
 	
 	return ret;
