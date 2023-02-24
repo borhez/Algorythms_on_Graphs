@@ -125,8 +125,8 @@ std::vector<std::vector<double>> GraphAlgorithms::getShortestPathsBetweenAllVert
 // 	printf("\n\n");
 // }
 
-// template <typename T>
-void remove(std::vector<int>& v, size_t index)
+template <typename T>
+void remove(std::vector<T>& v, size_t index)
 {
     v.erase(v.begin() + index);
 }
@@ -265,10 +265,10 @@ void checkGraph(Graph &graph)
 	printf("graph is not checked\n");
 }
 
-void funcInit()
-{
-	printf("Init\n");
-}
+// void funcInit()
+// {
+// 	printf("Init\n");
+// }
 int antsGoGoGo()
 {
 }
@@ -296,15 +296,34 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	double qVal = 100;
 	double initPheromone = 1/nVerts;
 
-	// ret.distance = 10;
-	// ret.vertices = new int[graph.getVerticesNumber()];
-	// for (size_t i = 0; i < graph.getVerticesNumber(); i++)
-	// {
-	// 	ret.vertices[i] = i;
-	// }
-		
+	double pheromone[nVerts];
 
-	funcInit();
+	typedef struct AntData{
+		int curVert;
+		int nextVert;
+		std::vector<int> visited;
+		std::vector<int> unvisited;
+		// std::vector<size_t> path;
+		// int pathIndex = -1;
+		double tourLength;
+	}AntData;
+	AntData ants[nVerts];
+	std::vector<size_t> bestWay;
+
+	//Init:
+	for (size_t i = 0; i < nVerts; i++)
+	{
+		ants[i].visited.push_back(i);
+		for (size_t unV = 0; unV < nVerts; unV++)
+		{
+			if (unV == i)
+				continue;
+			ants[i].unvisited.push_back(unV);
+		}
+		pheromone[i] = initPheromone;
+	}
+	//--endInit---
+
 	for (size_t i=0; i < nTimes; i++)
 	{
 		if (antsGoGoGo() == 0)
@@ -312,5 +331,15 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 		if (i != nTimes)
 			restartAnts();
 	}
+
+
+	//return:
+	ret.distance=-1;
+	ret.vertices = new int [nVerts];
+	for (int i = 0; i < nVerts; i++)
+	{//скопировать из best ant.visited
+		ret.vertices[i] = 1;
+	}
+	
 	return ret;
 }
