@@ -292,10 +292,11 @@ Rho (ρ): при ρ > 0,5 хорошие результаты;
 которая сохранится на гранях.
 */
 	typedef struct Data{
-		double alpha = 1;//отвечает за фермент
-		double beta = 5;//за расстояние
-		double rho = 0.77;
-		double qVal = 10;
+		const double alpha = 1;//отвечает за фермент
+		const double beta = 2;//за расстояние
+		const double rho = 0.5;
+		const double qVal = 10;
+		double initialPheromone;
 		size_t nAnts;
 		size_t nVerts;
 		std::vector<std::vector<double>> pheromone;
@@ -421,6 +422,20 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 {
 	double deltaPherom, newPherom, oldPherom;
 
+	//испарим фермент на каждой гране:
+	for (size_t row = 0; row < dataStruct.nVerts; row++)
+	{
+		for (size_t col = 0; col < dataStruct.nVerts; col++)
+		{
+			if (col == row)
+				continue;
+			dataStruct.pheromone[row][col] = dataStruct.pheromone[row][col] * (1 - dataStruct.rho);
+			if (dataStruct.pheromone[row][col] < 0.0)
+				dataStruct.pheromone[row][col] = dataStruct.initialPheromone;
+		}
+	}
+	
+
 	for (size_t i = 0; i < dataStruct.nAnts; i++)
 	{//для каждого муравья расчитать и разложить феромон по граням пути муравья
 		deltaPherom = dataStruct.qVal / ants[i].length;//выделил i-муравей без учета распыления
@@ -429,9 +444,8 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 		for (size_t n = 0; n < dataStruct.nVerts; n++)
 		{//для каждой грани пути текущего муравья:
 			oldPherom = dataStruct.pheromone[*(ants[i].visited.begin() +n)][*(ants[i].visited.begin() +n +1)];
-			newPherom = (dataStruct.rho * deltaPherom) + oldPherom;//распыление феромона
-			newPherom = newPherom * (1 - dataStruct.rho);//испарение феромона
-			newPherom = (newPherom < 0) ? 0 : newPherom;
+			newPherom = (deltaPherom + oldPherom) * dataStruct.rho;//распыление феромона
+			newPherom = (newPherom < 0.0) ?  dataStruct.initialPheromone : newPherom;
 			//записываем новый феромон в вектор-феромон:
 			dataStruct.pheromone[*(ants[i].visited.begin() +n)][*(ants[i].visited.begin() +n +1)] = newPherom;
 							printf("398:oldPherom= %lf\n", oldPherom);
@@ -447,36 +461,23 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	checkGraph(graph);
 	TsmResult ret;
 	size_t nVerts = graph.getVerticesNumber();
-	// size_t nAnts = nVerts;
-	size_t nTimes = 3;//20 * nVerts;
-	// double alpha = 1;
-	// double beta = 1;
-	// double rho = 0.55;
-	// double qVal = 100;
-
-	// double pheromone[nVerts];
-
+	size_t nTimes = 200 * nVerts;
 	AntStruct ants[nVerts];
-	// std::vector<std::vector<double>> phero(nVerts);
 
 	//Init:
 	Data dataStruct;
-	dataStruct.alpha = 1;
-	dataStruct.beta = 1;
-	dataStruct.rho = 0.55;
-	dataStruct.qVal = 100;
 	dataStruct.bestDistance = std::numeric_limits<int>::max();
 	dataStruct.nAnts = nVerts;
 	dataStruct.nVerts = nVerts;
-	double initPheromone = 1.0/(double)nVerts;
+	dataStruct.initialPheromone = 1.0/(double)(nVerts);
 	dataStruct.pheromone.resize(nVerts);
 	for (size_t i = 0; i < nVerts; i++)
 	{
 		dataStruct.pheromone[i].resize(nVerts);
 		for (size_t n = 0; n < nVerts; n++)
 		{
-			dataStruct.pheromone[i][n] = initPheromone;
-		}
+			dataStruct.pheromone[i][n] = dataStruct.initialPheromone;
+		}	
 	}
 
 	for (size_t i = 0; i < nVerts; i++)
