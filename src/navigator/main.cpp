@@ -41,18 +41,18 @@ static void printMatrixVector(std::vector<std::vector<int>>& mtrx, size_t size)
 	}
 }
 
-void printTsmRes(TsmResult &tsm, int nVert)
-{
-	if (tsm.vertices)
-	{
-		printf("bestWay:");
-		for (size_t i = 0; i < nVert; i++)
-		{
-			printf(" %d", tsm.vertices[i]);
-		}
-		printf("\n");
-	}
-}
+// void printTsmRes(TsmResult &tsm, int nVert)
+// {
+// 	if (tsm.vertices)
+// 	{
+// 		printf("bestWay:");
+// 		for (size_t i = 0; i < nVert; i++)
+// 		{
+// 			printf(" %d", tsm.vertices[i]);
+// 		}
+// 		printf("\n");
+// 	}
+// }
 
 int main()
 {
@@ -72,7 +72,15 @@ int main()
   
   TsmResult tsm;
   tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
-  printTsmRes(tsm, graph.getVerticesNumber());
-delete[] tsm.vertices;
+//   printTsmRes(tsm, graph.getVerticesNumber());
+// delete[] tsm.vertices;
+printf("\nVector:");
+for (size_t i = 0; i < tsm.vertices.size(); i++)
+{
+	printf(" %d", tsm.vertices[i]);
+}
+printf("\n");
+
+printf("minDistance= %lf\n", tsm.distance);
   return 1;
 }

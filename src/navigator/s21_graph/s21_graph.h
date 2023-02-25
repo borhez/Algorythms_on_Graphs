@@ -17,14 +17,14 @@ private:
     Matrix *_m;
 	int _type = UNDIRECT;
 public:
-    ~Graph() { delete _m;}				// !!! как это тестить, если есть ток lesks?
+    ~Graph() { delete _m;}
     Graph() : _m(new Matrix(0)) {}
 
-    int loadGraphFromFile(const std::string &filename);
-    int exportGraphToDot(const std::string &filename);
+    int loadGraphFromFile(const std::string &filename);	// загрузка матрицы смежности из файла
+    int exportGraphToDot(const std::string &filename);	// выгрузка матрицы в фейл
 
-	double getDist(size_t a, size_t b);
-	std::size_t getVerticesNumber() { return _m->getSideSize(); }
+	double getDist(size_t a, size_t b);								// возвращает элемент матрицы: а/i - строка, b/j - столбец, нумерация с нуля
+	std::size_t getVerticesNumber() { return _m->getSideSize(); }	// кол-во вершин в графе(т. е. длина и ширина матрицы)
 };
 
 int error(const std::string &massage);
