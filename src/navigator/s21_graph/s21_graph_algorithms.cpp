@@ -274,11 +274,28 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 		double length;
 	}AntStruct;
 
+/*
+Был открыт ряд комбинаций α/β, которые позволяют находить хорошие результаты:
+α/β: 0.5/5   1/1   1/2   1/5;
+α ассоциируется с количеством фермента
+β с видимостью (длинной грани).
+Чем больше значение параметра, тем он важнее для вероятностного уравнения,
+которое используется при выборе грани. В одном случае значимость параметров
+равна. Во всех других случаях видимость более важна при выборе пути.
+
+Rho (ρ): при ρ > 0,5 хорошие результаты;
+		 при ρ < 0,5 неудовлетворительные.
+Параметр ρ представляет коэффициент, который применяется к распыляемому
+на пути ферменту, а (1,0 – ρ) представляет коэффициент испарения для
+существующего фермента. 
+В первую очередь этот параметр определяет концентрацию фермента,
+которая сохранится на гранях.
+*/
 	typedef struct Data{
-		double alpha = 1;
-		double beta = 1;
-		double rho = 0.55;
-		double qVal = 100;
+		double alpha = 1;//отвечает за фермент
+		double beta = 5;//за расстояние
+		double rho = 0.77;
+		double qVal = 10;
 		size_t nAnts;
 		size_t nVerts;
 		std::vector<std::vector<double>> pheromone;
@@ -300,9 +317,9 @@ int getNextVert(AntStruct &ant, Graph &graph, Data &dataStruct)
 		{//для каждой непосещённой вершины считаю знаменатель:
 			double distance = graph.getDist(ant.curVert, ant.unvisited[unvisitInd]);
 			denominator += pow(dataStruct.pheromone[ant.curVert][ant.unvisited[unvisitInd]], dataStruct.alpha) * pow(1.0/distance, dataStruct.beta);
-			printf("pherom %lf\n", dataStruct.pheromone[ant.curVert][ant.unvisited[unvisitInd]]);
-			printf("distan %lf\n", distance);
-		printf("denom: %lf\n", denominator);
+			// printf("pherom %lf\n", dataStruct.pheromone[ant.curVert][ant.unvisited[unvisitInd]]);
+			// printf("distan %lf\n", distance);
+		// printf("denom: %lf\n", denominator);
 			assert(denominator != 0);
 		}
 
@@ -314,19 +331,21 @@ int getNextVert(AntStruct &ant, Graph &graph, Data &dataStruct)
 				unvisitInd = 0;
 			double distance = graph.getDist(ant.curVert, ant.unvisited[unvisitInd]);
 			double nominator = pow(dataStruct.pheromone[ant.curVert][ant.unvisited[unvisitInd]], dataStruct.alpha) *\
-													pow(1.0/distance, dataStruct.alpha);
-			printf("\nant.unvisited[unvisitInd]=%d\n", ant.unvisited[unvisitInd]);
-			printf("nom: %lf\n", nominator);
-			p = 100 * nominator / denominator;printf("p=%lf\n", p);
+													pow(1.0/distance, dataStruct.beta);
+			// printf("\nant.unvisited[unvisitInd]=%d\n", ant.unvisited[unvisitInd]);
+			// printf("nom: %lf\n", nominator);
+			p = 100 * nominator / denominator;
+			// printf("p=%lf\n", p);
 			if ((n=rand() % 100) < p)
-				{printf("break; n=%lf\n", n);
+				{
+					//printf("break; n=%lf\n", n);
 					break;
 				}
-				printf("n=%lf\n", n);
+				// printf("n=%lf\n", n);
 			unvisitInd += 1;
 		}
 		printf("ret=%d\n", ant.unvisited[unvisitInd]);
-				printf("denom: %lf\n\n\nnext:\n", denominator);
+				// printf("denom: %lf\n\n\nnext:\n", denominator);
 	int ret = ant.unvisited[unvisitInd];
 	remove(ant.unvisited, unvisitInd);//ant start from curVert to nextVert
 	return ret;
@@ -347,6 +366,7 @@ int antsGoGoGo(AntStruct *ants, Graph &graph, Data &dataStruct)
 	//для каждого муравья:
 	for (size_t i = 0; i < dataStruct.nAnts; i++)
 	{
+		printf("\n\n352:newAnt\n");
 		for (; ants[i].unvisited.size() > 0;)
 		{//на каждой итерации вектор unvisited уменьшается на одну вершину
 		//выбрать след.вершину из вектора unvisited:
@@ -369,7 +389,6 @@ int antsGoGoGo(AntStruct *ants, Graph &graph, Data &dataStruct)
 			dataStruct.bestDistance = ants[i].length;
 			//vector1.assign(vector2.begin(), vector2.end());
 			dataStruct.bestWay.assign(ants[i].visited.begin(), ants[i].visited.end());
-			printf("curentBestLength= %d\n\n", dataStruct.bestDistance);
 		}
 	}
 	// printf("finalBestLength= %d\n\n", dataStruct.bestDistance);
@@ -381,18 +400,10 @@ int antsGoGoGo(AntStruct *ants, Graph &graph, Data &dataStruct)
 
 void restartAnts(AntStruct *ants, Data &dataStuct)
 {
-
-	// for (size_t i = 0, n = 0; i < dataStuct.nAnts; i++, n++)
-	// {
-	// 				 printf("387: %d\n", ants[i].unvisited.size());
-
-	// 	ants[i].length = 0; 
-	// 	ants[i].visited.clear(); printf("\nsize visited=%d\n", ants[i].visited.size());
-
 	for (size_t i = 0; i < dataStuct.nVerts; i++)
 	{
 		ants[i].length = 0; 
-		ants[i].visited.clear(); printf("\nsize visited=%d\n", ants[i].visited.size());
+		ants[i].visited.clear();
 		ants[i].unvisited.clear();
 		ants[i].visited.push_back(i);//муравей в каждой вершине
 		for (size_t n = 0; n <dataStuct.nVerts; n++)
@@ -413,6 +424,8 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 	for (size_t i = 0; i < dataStruct.nAnts; i++)
 	{//для каждого муравья расчитать и разложить феромон по граням пути муравья
 		deltaPherom = dataStruct.qVal / ants[i].length;//выделил i-муравей без учета распыления
+				printf("\n\nnextAnt:\n");
+
 		for (size_t n = 0; n < dataStruct.nVerts; n++)
 		{//для каждой грани пути текущего муравья:
 			oldPherom = dataStruct.pheromone[*(ants[i].visited.begin() +n)][*(ants[i].visited.begin() +n +1)];
@@ -424,9 +437,7 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 							printf("398:oldPherom= %lf\n", oldPherom);
 						printf("401newPherom= %lf\n", newPherom);
 						printf("distance=%lf\n", ants[i].length);
-
 		}
-		printf("\n\nnextAnt:\n");
 	}
 	
 }
@@ -437,7 +448,7 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	TsmResult ret;
 	size_t nVerts = graph.getVerticesNumber();
 	// size_t nAnts = nVerts;
-	size_t nTimes = 100;//20 * nVerts;
+	size_t nTimes = 3;//20 * nVerts;
 	// double alpha = 1;
 	// double beta = 1;
 	// double rho = 0.55;
@@ -487,7 +498,7 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 
 	srand(time(NULL));
 	for (size_t i=0; i < nTimes; i++)
-	{printf("\n\nNEXT TIME:\n");
+	{printf("\n\nNEXT TIME(%d):\n", i);
 		// if (antsGoGoGo(ants, graph, dataStruct) == 0)
 		// 	getNewValues();
 		antsGoGoGo(ants, graph, dataStruct);
@@ -499,17 +510,8 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 // vector1.assign(vector2.begin(), vector2.end());
 	// bestWay.assign(ants[1].visited.begin(), ants[1].unvisited.end());
 	//return:
-	printf("finalBestLength= %d\n\n", dataStruct.bestDistance);
-	printVector(dataStruct.bestWay);
 
 	ret.distance=dataStruct.bestDistance;
-	// ret.vertices = new int [nVerts];
-	// for (int i = 0; i < nVerts; i++)
-	// {//скопировать из best ant.visited
-	// 	// ret.vertices[i] = ants[1].unvisited[i];
-	// 	// ret.vertices[i] = bestWay[i];
-	// 	ret.vertices[i	] = i;
-	// }
 	ret.vertices.assign(dataStruct.bestWay.begin(), dataStruct.bestWay.end());
 	return ret;
 }
