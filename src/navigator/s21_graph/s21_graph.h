@@ -25,7 +25,6 @@ public:
 
 	double getDist(size_t a, size_t b);
 	std::size_t getVerticesNumber() { return _m->getSideSize(); }
-    int getMatrxElem(int row, int col) {return _m->getElem(row, col);}
 };
 
 int error(const std::string &massage);

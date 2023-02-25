@@ -22,7 +22,7 @@ void	printGraphMatrix(Graph &graph)
 	{
 		for (size_t j = 0; j < graph.getVerticesNumber(); j++)
 		{
-			printf("%d ", graph.getMatrxElem(i, j));
+			printf("%d ", graph.getDist(i, j));
 		}
 		printf("\n");
 	}
@@ -46,7 +46,7 @@ void printTsmRes(TsmResult &tsm, int nVert)
 	if (tsm.vertices)
 	{
 		printf("bestWay:");
-		for (size_t i = 0; i < 4; i++)
+		for (size_t i = 0; i < nVert; i++)
 		{
 			printf(" %d", tsm.vertices[i]);
 		}
@@ -59,7 +59,7 @@ int main()
   Graph graph;
   
 
-  if (graph.loadGraphFromFile("../unit_test_files/prima5.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/saleman5.txt") < 0)
 	  return -1;
 //   printf("matrix from file:\n\n");
 //   printGraphMatrix(graph);

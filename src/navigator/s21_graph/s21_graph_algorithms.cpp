@@ -1,5 +1,6 @@
 #include "s21_graph_algorithms.h"
 #include <algorithm>
+#include <cmath>
 std::vector<int> GraphAlgorithms::depthFirstSearch(Graph &graph, int startVertex){
   int iRes = 0;
   std::vector<int> res(graph.getVerticesNumber(), 0);
@@ -178,7 +179,7 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 			//заполняю вспомогательную матрицу (копия загруженной из файла)
 			//заполняю нулями матрицу остовного дерева
 			if (i != j)
-				helpMatrix[i][j] = graph.getMatrxElem(i, j);
+				helpMatrix[i][j] = graph.getDist(i, j);
 			else { helpMatrix[i][j] = 0; }
 			mtrxOstovTree[i][j] = 0;
 		}
@@ -259,14 +260,78 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	return (mtrxOstovTree);
 }
 
+//------------------------коммивояжер-------------
+	typedef struct AntStruct{
+		// size_t antsMax;
+		int curVert;
+		int nextVert;
+		std::vector<int> visited;
+		std::vector<int> unvisited;
+		// std::vector<size_t> path;
+		// int pathIndex = -1;
+		double length;
+	}AntStruct;
+
+	typedef struct Data{
+		double alpha = 1;
+		double beta = 1;
+		double rho = 0.55;
+		double qVal = 100;
+		size_t nAnts;
+		std::vector<double> pheromone;
+		std::vector<int> bestWay;
+		int bestDistance;
+	}Data;
+
 
 void checkGraph(Graph &graph)
 {
 	// printf("graph is not checked\n");
 }
 
-int antsGoGoGo()
+int getNextVert(AntStruct *ants, size_t i, Graph &graph, Data &dataStruct)
 {
+		ants[i].curVert = *(ants[i].visited.end() - 1);
+		double denominator = 0.0;
+		for (size_t unvisitInd = 0; unvisitInd < ants[i].unvisited.size(); unvisitInd++)
+		{//для каждой непосещённой вершины считаю знаменатель:
+			// ants[i].maybeNextVert = ants->unvisited[unvisitInd];
+			double distance = graph.getDist(ants[i].curVert, ants[i].unvisited[unvisitInd]);
+			denominator += pow(dataStruct.pheromone[unvisitInd], dataStruct.alpha) * pow(1.0/distance, dataStruct.beta);
+			printf("pherom %lf\n", dataStruct.pheromone[unvisitInd]);
+			printf("distan %lf\n", distance);
+		printf("denom: %lf\n", denominator);
+		}
+		printf("denom: %lf\n\n\nnext:\n", denominator);
+
+		int unvisitInd = 0;
+		// while (1)
+		// {//считаю числитель и вероятность; кидаю монетку , получаю следующую вершину.
+		// 	double p, n;	
+		// 	if (unvisitInd == ants[i].unvisited.size())
+		// 		unvisitInd = 0;
+		// 	double distance = graph.getDist(ants[i].curVert, ants[i].unvisited[unvisitInd]);
+		// 	double nominator = pow(dataStruct.pheromone[unvisitInd], dataStruct.alpha) *\
+		// 											pow(1.0/distance, dataStruct.alpha);
+		// 	p = 100 * nominator / denominator;printf("p=%lf\n", p);
+		// 	if ((n=rand() % 100) < p)
+		// 		{printf("break; n=%lf\n", n);
+		// 			break;
+		// 		}
+		// 		printf("n=%lf\n", n);
+		// 	unvisitInd += 1;
+		// }
+	return ants[i].unvisited[unvisitInd];
+}
+
+int antsGoGoGo(AntStruct *ants, std::vector<int> &bestWay, Graph &graph, Data &dataStruct)
+{//для каждого муравья:
+	for (size_t i = 0; i < dataStruct.nAnts; i++)
+	{//выбрать след.вершину:
+		ants[i].nextVert = getNextVert(ants, i, graph, dataStruct);
+	//-----след.вершина выбрана
+	}
+	return 0;
 }
 
 void restartAnts()
@@ -284,57 +349,66 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	checkGraph(graph);
 	TsmResult ret;
 	size_t nVerts = graph.getVerticesNumber();
-	size_t nAnts = nVerts;
-	size_t nTimes = 20 * nVerts;
-	double alpha = 1;
-	double beta = 1;
-	double rho = 0.55;
-	double qVal = 100;
-	double initPheromone = 1/nVerts;
+	// size_t nAnts = nVerts;
+	size_t nTimes = 2;//20 * nVerts;
+	// double alpha = 1;
+	// double beta = 1;
+	// double rho = 0.55;
+	// double qVal = 100;
 
-	double pheromone[nVerts];
+	// double pheromone[nVerts];
 
-	typedef struct AntData{
-		int curVert;
-		int nextVert;
-		std::vector<int> visited;
-		std::vector<int> unvisited;
-		// std::vector<size_t> path;
-		// int pathIndex = -1;
-		double tourLength;
-	}AntData;
-	AntData ants[nVerts];
-	std::vector<size_t> bestWay;
+	AntStruct ants[nVerts];
+	std::vector<int> bestWay;
 
 	//Init:
+	Data dataStruct;
+	dataStruct.alpha = 1;
+	dataStruct.beta = 1;
+	dataStruct.rho = 0.55;
+	dataStruct.qVal = 100;
+	dataStruct.pheromone.resize(nVerts);
+	dataStruct.bestWay.resize(nVerts);
+	dataStruct.bestDistance = std::numeric_limits<int>::max();
+	dataStruct.nAnts = nVerts;
+	double initPheromone = 1.0/(double)nVerts;
+
 	for (size_t i = 0; i < nVerts; i++)
 	{
-		ants[i].visited.push_back(i);
+		ants[i].visited.push_back(i);//муравей в каждой вершине
 		for (size_t unV = 0; unV < nVerts; unV++)
 		{
 			if (unV == i)
 				continue;
 			ants[i].unvisited.push_back(unV);
 		}
-		pheromone[i] = initPheromone;
+		dataStruct.pheromone[i] = initPheromone;//нач.феромон в каждой вершине
+		ants[i].curVert = i;
+		ants[i].nextVert = -1;
+		// ants[i].antsMax = nAnts;
+		ants[i].length = 0;
 	}
 	//--endInit---
 
+	srand(time(NULL));
 	for (size_t i=0; i < nTimes; i++)
-	{
-		if (antsGoGoGo() == 0)
+	{printf("\n\nNEXT TIME:\n");
+		if (antsGoGoGo(ants, bestWay, graph, dataStruct) == 0)
 			getNewValues();
 		if (i != nTimes)
 			restartAnts();
 	}
-
-
+//приравнять два вектора:
+// vector1.assign(vector2.begin(), vector2.end());
+	// bestWay.assign(ants[1].visited.begin(), ants[1].unvisited.end());
 	//return:
 	ret.distance=-1;
 	ret.vertices = new int [nVerts];
-	for (int i = 0; i < ants[1].unvisited.size(); i++)
+	for (int i = 0; i < nVerts; i++)
 	{//скопировать из best ant.visited
-		ret.vertices[i] = ants[1].unvisited[i];
+		// ret.vertices[i] = ants[1].unvisited[i];
+		// ret.vertices[i] = bestWay[i];
+		ret.vertices[i] = i;
 	}
 	
 	return ret;
