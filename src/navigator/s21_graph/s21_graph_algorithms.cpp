@@ -326,24 +326,56 @@ int getNextVert(AntStruct &ant, Graph &graph, Data &dataStruct)
 		}
 		printf("ret=%d\n", ant.unvisited[unvisitInd]);
 				printf("denom: %lf\n\n\nnext:\n", denominator);
-
-	return ant.unvisited[unvisitInd];
+	int ret = ant.unvisited[unvisitInd];
+	remove(ant.unvisited, unvisitInd);//ant start from curVert to nextVert
+	return ret;
+}
+void	printVector(std::vector<int> &v)
+{
+	printf("\n\nbestWAY:");
+	for (size_t i = 0; i < v.size(); i++)
+	{
+		printf(" %d",v[i]);
+	}
+	printf("\n\n");	
 }
 
-int antsGoGoGo(AntStruct *ants, std::vector<int> &bestWay, Graph &graph, Data &dataStruct)
+int antsGoGoGo(AntStruct *ants, Graph &graph, Data &dataStruct)
 {
-	size_t moovingFlag = 0;
+	// size_t moovingFlag = 0;
 	//для каждого муравья:
 	for (size_t i = 0; i < dataStruct.nAnts; i++)
-	{//выбрать след.вершину:
-		if (ants[i].unvisited.size() == 0)
-			continue;
-		ants[i].nextVert = getNextVert(ants[i], graph, dataStruct);
-	//-----след.вершина выбрана
-
-		moovingFlag++;
+	{
+		for (; ants[i].unvisited.size() > 0;)
+		{//на каждой итерации вектор unvisited уменьшается на одну вершину
+		//выбрать след.вершину из вектора unvisited:
+			ants[i].nextVert = getNextVert(ants[i], graph, dataStruct);
+		//-----след.вершина выбрана
+			ants[i].length += graph.getDist(ants[i].curVert, ants[i].nextVert);
+			printf("l=%lf\n", ants[i].length);//надо рестартить = 0
+			ants[i].visited.push_back(ants[i].nextVert);//движение из curVert в nextVert
+		//удаление из вектора ants[i].unvisited было в функции getNextVert()---
+			// moovingFlag++;//произошло движение муравья.
+		}
+		//добавить начальную вершину(ants[i].visited[0]):
+		ants[i].curVert = *(ants[i].visited.end() - 1);
+		ants[i].length += graph.getDist(ants[i].curVert, ants[i].visited[0]);
+		printf("353:length= %lf\n", ants[i].length);
+		ants[i].visited.push_back(ants[i].visited[0]);
+		//---------------
+		if (ants[i].length < dataStruct.bestDistance)
+		{
+			dataStruct.bestDistance = ants[i].length;
+			//vector1.assign(vector2.begin(), vector2.end());
+			dataStruct.bestWay.assign(ants[i].visited.begin(), ants[i].visited.end());
+			printf("curentBestLength= %d\n\n", dataStruct.bestDistance);
+		}
 	}
-	return moovingFlag;
+	// printf("finalBestLength= %d\n\n", dataStruct.bestDistance);
+	// printVector(dataStruct.bestWay);
+
+	return 1;
+	// return moovingFlag;
 }
 
 void restartAnts()
@@ -362,7 +394,7 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	TsmResult ret;
 	size_t nVerts = graph.getVerticesNumber();
 	// size_t nAnts = nVerts;
-	size_t nTimes = 2;//20 * nVerts;
+	size_t nTimes = 1;//20 * nVerts;
 	// double alpha = 1;
 	// double beta = 1;
 	// double rho = 0.55;
@@ -371,7 +403,6 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	// double pheromone[nVerts];
 
 	AntStruct ants[nVerts];
-	std::vector<int> bestWay;
 	// std::vector<std::vector<double>> phero(nVerts);
 
 	//Init:
@@ -383,7 +414,6 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	dataStruct.bestDistance = std::numeric_limits<int>::max();
 	dataStruct.nAnts = nVerts;
 	double initPheromone = 1.0/(double)nVerts;
-	dataStruct.bestWay.resize(nVerts);
 	dataStruct.pheromone.resize(nVerts);
 	for (size_t i = 0; i < nVerts; i++)
 	{
@@ -414,15 +444,20 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	srand(time(NULL));
 	for (size_t i=0; i < nTimes; i++)
 	{printf("\n\nNEXT TIME:\n");
-		if (antsGoGoGo(ants, bestWay, graph, dataStruct) == 0)
-			getNewValues();
-		if (i != nTimes)
-			restartAnts();
+		// if (antsGoGoGo(ants, graph, dataStruct) == 0)
+		// 	getNewValues();
+		antsGoGoGo(ants, graph, dataStruct);
+		getNewValues();
+		// if (i != nTimes)
+		restartAnts();
 	}
 //приравнять два вектора:
 // vector1.assign(vector2.begin(), vector2.end());
 	// bestWay.assign(ants[1].visited.begin(), ants[1].unvisited.end());
 	//return:
+	printf("finalBestLength= %d\n\n", dataStruct.bestDistance);
+	printVector(dataStruct.bestWay);
+
 	ret.distance=-1;
 	ret.vertices = new int [nVerts];
 	for (int i = 0; i < nVerts; i++)
