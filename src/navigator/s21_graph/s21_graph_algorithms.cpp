@@ -295,7 +295,7 @@ Rho (ρ): при ρ > 0,5 хорошие результаты;
 		const double alpha = 1;//отвечает за фермент
 		const double beta = 5;//за расстояние
 		const double rho = 0.50;
-		const double qVal = 100;
+		const double qVal = 1000;
 		double initialPheromone;
 		size_t nAnts;
 		size_t nVerts;
@@ -321,8 +321,9 @@ int getNextVert(AntStruct &ant, Graph &graph, Data &dataStruct)
 			// printf("pherom %lf\n", dataStruct.pheromone[ant.curVert][ant.unvisited[unvisitInd]]);
 			// printf("distan %lf\n", distance);
 		// printf("denom: %lf\n", denominator);
-			assert(denominator != 0);
+			// assert(denominator != 0);
 		}
+
 
 		int unvisitInd = 0;
 		while (1)
@@ -335,6 +336,9 @@ int getNextVert(AntStruct &ant, Graph &graph, Data &dataStruct)
 													pow(1.0/distance, dataStruct.beta);
 			// printf("\nant.unvisited[unvisitInd]=%d\n", ant.unvisited[unvisitInd]);
 			// printf("nom: %lf\n", nominator);
+			if (denominator <= 0.0)
+				denominator = 100 * nominator;
+			assert(denominator != 0);
 			p = 100 * nominator / denominator;
 			// printf("p=%lf\n", p);
 			if ((n=rand() % 100) < p)
@@ -430,7 +434,7 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 			if (col == row)
 				continue;
 			dataStruct.pheromone[row][col] = dataStruct.pheromone[row][col] * (1 - dataStruct.rho);
-			if (dataStruct.pheromone[row][col] < 0.0)
+			if (dataStruct.pheromone[row][col] <= 0.0)
 				dataStruct.pheromone[row][col] = dataStruct.initialPheromone;
 		}
 	}
@@ -445,7 +449,7 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 		{//для каждой грани пути текущего муравья:
 			oldPherom = dataStruct.pheromone[*(ants[i].visited.begin() +n)][*(ants[i].visited.begin() +n +1)];
 			newPherom = (deltaPherom + oldPherom) * dataStruct.rho;//распыление феромона
-			newPherom = (newPherom < 0.0) ?  dataStruct.initialPheromone : newPherom;
+			newPherom = (newPherom <= 0.0) ?  dataStruct.initialPheromone : newPherom;
 			//записываем новый феромон в вектор-феромон:
 			dataStruct.pheromone[*(ants[i].visited.begin() +n)][*(ants[i].visited.begin() +n +1)] = newPherom;
 							printf("398:oldPherom= %lf\n", oldPherom);
@@ -461,7 +465,7 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	checkGraph(graph);
 	TsmResult ret;
 	size_t nVerts = graph.getVerticesNumber();
-	size_t nTimes = 20 * nVerts;
+	size_t nTimes = 1000 * nVerts;
 	AntStruct ants[nVerts];
 
 	//Init:
