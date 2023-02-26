@@ -11,7 +11,6 @@ struct TsmResult {
     double distance;  // the length of this route
 };
 
-
 class GraphAlgorithms
 {
 public:

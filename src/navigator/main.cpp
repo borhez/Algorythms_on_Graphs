@@ -41,25 +41,23 @@ static void printMatrixVector(std::vector<std::vector<int>>& mtrx, size_t size)
 	}
 }
 
-// void printTsmRes(TsmResult &tsm, int nVert)
-// {
-// 	if (tsm.vertices)
-// 	{
-// 		printf("bestWay:");
-// 		for (size_t i = 0; i < nVert; i++)
-// 		{
-// 			printf(" %d", tsm.vertices[i]);
-// 		}
-// 		printf("\n");
-// 	}
-// }
+void printTsmRes(TsmResult &tsm)
+{
+	printf("Way:");
+	for (size_t i = 0; i < tsm.vertices.size(); i++)
+	{
+		printf(" %d", tsm.vertices[i]);
+	}
+	printf("\n");
+	printf("Distance= %f\n", tsm.distance);
+}
 
 int main()
 {
   Graph graph;
   
 
-  if (graph.loadGraphFromFile("../unit_test_files/saleman21.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/saleman11.txt") < 0)
 	  return -1;
 //   printf("matrix from file:\n\n");
 //   printGraphMatrix(graph);
@@ -72,15 +70,8 @@ int main()
   
   TsmResult tsm;
   tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
-//   printTsmRes(tsm, graph.getVerticesNumber());
-// delete[] tsm.vertices;
-printf("\nVector:");
-for (size_t i = 0; i < tsm.vertices.size(); i++)
-{
-	printf(" %d", tsm.vertices[i]);
-}
-printf("\n");
-
-printf("minDistance= %lf\n", tsm.distance);
-  return 1;
+extern bool g_errorGraphTsm;
+	if (g_errorGraphTsm == 0)
+		printTsmRes(tsm);
+	return 1;
 }
