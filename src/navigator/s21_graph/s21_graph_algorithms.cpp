@@ -293,9 +293,9 @@ Rho (ρ): при ρ > 0,5 хорошие результаты;
 */
 	typedef struct Data{
 		const double alpha = 1;//отвечает за фермент
-		const double beta = 2;//за расстояние
-		const double rho = 0.5;
-		const double qVal = 10;
+		const double beta = 5;//за расстояние
+		const double rho = 0.50;
+		const double qVal = 100;
 		double initialPheromone;
 		size_t nAnts;
 		size_t nVerts;
@@ -461,7 +461,7 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	checkGraph(graph);
 	TsmResult ret;
 	size_t nVerts = graph.getVerticesNumber();
-	size_t nTimes = 200 * nVerts;
+	size_t nTimes = 20 * nVerts;
 	AntStruct ants[nVerts];
 
 	//Init:

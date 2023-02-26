@@ -59,7 +59,7 @@ int main()
   Graph graph;
   
 
-  if (graph.loadGraphFromFile("../unit_test_files/saleman5.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/saleman11.txt") < 0)
 	  return -1;
 //   printf("matrix from file:\n\n");
 //   printGraphMatrix(graph);
