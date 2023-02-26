@@ -95,41 +95,7 @@ std::vector<std::vector<double>> GraphAlgorithms::getShortestPathsBetweenAllVert
   return memo;
 }
 
-
-// void fillHelpMatrix(std::vector<std::vector<int>>& helpMatrix, Graph graph, size_t nVertices)
-// {
-// 	for (size_t i = 0; i < nVertices; i++)
-// 	{
-// 		for (size_t j = 0; j < nVertices; j++)
-// 		{
-// 			helpMatrix[i][j] = graph.getMatrxElem(i, j);
-// 		}
-// 	}
-// }
-
-// void printMatrix2dVector(std::vector<std::vector<int>>& mtrx, size_t size)
-// {
-// 	for (size_t i = 0; i < size; i++)
-// 	{
-// 		for (size_t j = 0; j < size; j++)
-// 		{
-// 			printf("%d ", mtrx[i][j]);
-// 		}
-// 		printf("\n");
-// 	}
-// 	printf("\n");
-// }
-
-// void printVectorElements(std::vector<int>& vec)
-// {
-// 	printf("Vector:");
-// 	for (size_t i=0; i < vec.size(); i++)
-// 	{
-// 		printf("%d ", vec.at(i));
-// 	}
-// 	printf("\n\n");
-// }
-
+//------------MinOstovTree:-----------------
 template <typename T>
 void remove(std::vector<T>& v, size_t index)
 {
@@ -159,7 +125,6 @@ bool checkAllElemsAreZero(std::vector<int> v)
 	return (1);
 }
 
-
 //Алгоритм Прима — алгоритм построения минимального остовного дерева взвешенного связного неориентированного графа.
 std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph)
 {
@@ -173,8 +138,6 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 		helpMatrix[i].resize(nVertices);
 	}
 	
-
-	//fill matrix from graph-matrix:
 	for (size_t i = 0; i < nVertices; i++)
 	{
 		for (size_t j = 0; j < nVertices; j++)
@@ -188,46 +151,22 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 			mtrxOstovTree[i][j] = 0;
 		}
 	}
-
-
-
-	/*	2vector для хранения  вершин. На каждом шаге буду добавлять
-		и убавлять вершину из этих векторов, при построении остова дерева
+	/*	vector для хранения  вершин. На каждом шаге буду добавлять
+		 вершину в этот вектор, при построении остова дерева
 	*/
-	// std::vector<int> unconnectedVert(nVertices);
 	std::vector<int> connectedVert(0);
-	// for (size_t i = 0; i < nVertices; i++)
-	// {
-	// 	unconnectedVert[i] = i;
-	// }
-	// printVectorElements(unconnectedVert);
-	// printVectorElements(connectedVert);
-	
-	
-
 	//ищем первую ненулевую вершину
 	int startVert = findStartVert(helpMatrix, nVertices);
-	// printf("%d\n", helpMatrix[startVert][3]);
-	
-	//удаляю стартовую вершину из unconnected, добавляю в connected
-	// remove(unconnectedVert, startVert);
 	connectedVert.push_back(startVert);
-	// printVectorElements(unconnectedVert);
-
-
 
 	//Search ostovTree from the 1st vertex
 	//Stop search when all vertices will be connected;
-	//на каждой итерации цикла добавляется одна вершина
+	//на каждой итерации цикла в матрицу остовного дерева добавляется одна вершина
 	int tempRow, tempCol, iTemp;
 	int n = 0;
 	int	minWeight;
 	while (n < nVertices - 1)
 	{
-			// printf("	Next Step!\nhelp_matrix:\n");
-			// printMatrix2dVector(helpMatrix, nVertices);
-			// printVectorElements(connectedVert);
-
 		minWeight = std::numeric_limits<int>::max();
 		for (size_t i = 0; i < connectedVert.size(); i++)
 		{
@@ -245,15 +184,9 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 				}
 			}
 		}
-		// printf("rowTemp=%d; colTemp=%d; iTemp=%d\n", tempRow, tempCol, iTemp);
 		mtrxOstovTree[tempRow][tempCol] = helpMatrix[tempRow][tempCol];
 		helpMatrix[tempRow][tempCol] = 0;
 		helpMatrix[tempCol][tempRow] = 0;
-		// 		printf("\nafter edit, help matrix:\n");
-		// printMatrix2dVector(helpMatrix, nVertices);
-		// 				printf("\n TreeMatrix:\n");
-		// printMatrix2dVector(mtrxOstovTree, nVertices);
-
 
 		if (checkAllElemsAreZero(helpMatrix[tempRow]))
 			remove(connectedVert, iTemp);
@@ -264,7 +197,7 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	return (mtrxOstovTree);
 }
 
-//------------------------коммивояжер-------------
+//------------------------задача коммивояжера-------------
 
 /*
 Был открыт ряд комбинаций α/β, которые позволяют находить хорошие результаты:
@@ -284,8 +217,8 @@ Rho (ρ): при ρ > 0,5 хорошие результаты;
 которая сохранится на гранях.
 */
 	typedef struct Data{
-		const double alpha = 0.5;//отвечает за фермент
-		const double beta = 5;//за расстояние
+		const double alpha = 0.5;//влияет на фермент
+		const double beta = 5;//на расстояние
 		const double rho = 0.63;
 		const double qVal = 1000;
 		double initialPheromone;
