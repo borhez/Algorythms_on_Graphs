@@ -22,7 +22,7 @@ void	printGraphMatrix(Graph &graph)
 	{
 		for (size_t j = 0; j < graph.getVerticesNumber(); j++)
 		{
-			printf("%d ", graph.getDist(i, j));
+			printf("%f ", graph.getDist(i, j));
 		}
 		printf("\n");
 	}
@@ -57,7 +57,7 @@ int main()
   Graph graph;
   
 
-  if (graph.loadGraphFromFile("../unit_test_files/saleman11.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/saleman21.txt") < 0)
 	  return -1;
 //   printf("matrix from file:\n\n");
 //   printGraphMatrix(graph);

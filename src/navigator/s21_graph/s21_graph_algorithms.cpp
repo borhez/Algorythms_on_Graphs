@@ -205,9 +205,9 @@ std::vector<std::vector<int>> GraphAlgorithms::getLeastSpanningTree(Graph &graph
 	Rho (ρ): от 0 до 1
 */
 	typedef struct Data{
-		const double alpha = 0.5;//влияет на фермент
-		const double beta = 5;//на расстояние
-		const double rho = 0.63;//rho это распыление на грань; (1-rho) это испарение
+		const double alpha = 1;//влияет на фермент
+		const double beta = 1;//на расстояние
+		const double rho = 0.5;//rho это распыление на грань; (1-rho) это испарение
 		const double qVal = 1000;
 		double initialPheromone;
 		size_t nAnts;
@@ -321,7 +321,7 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 {
 	double deltaPherom, newPherom, oldPherom;
 
-	//испарим фермент на каждой гране:
+	//испарим фермент на каждой грани:
 	for (size_t row = 0; row < dataStruct.nVerts; row++)
 	{
 		for (size_t col = 0; col < dataStruct.nVerts; col++)
@@ -336,11 +336,11 @@ void  getNewValues(AntStruct *ants, Data &dataStruct)
 	
 	for (size_t i = 0; i < dataStruct.nAnts; i++)
 	{//для каждого муравья расчитать и разложить феромон по граням пути муравья
-		deltaPherom = dataStruct.qVal / ants[i].length;//выделил i-муравей без учета распыления
+		deltaPherom =(dataStruct.qVal / ants[i].length);//распылил i-муравей  dataStruct.rho * 
 		for (size_t n = 0; n < dataStruct.nVerts; n++)
 		{//для каждой грани пути текущего муравья:
 			oldPherom = dataStruct.pheromone[*(ants[i].visited.begin() +n)][*(ants[i].visited.begin() +n +1)];
-			newPherom = (deltaPherom + oldPherom) * dataStruct.rho;//распыление феромона
+			newPherom = oldPherom + deltaPherom ;
 			newPherom = (newPherom <= 0.0) ?  dataStruct.initialPheromone : newPherom;
 			//записываем новый феромон в вектор-феромон:
 			dataStruct.pheromone[*(ants[i].visited.begin() +n)][*(ants[i].visited.begin() +n +1)] = newPherom;
