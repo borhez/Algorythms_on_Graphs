@@ -52,7 +52,8 @@ TEST_F(GraphAlgorithmsFixture, getShortestPathBetweenVertices)
 
 TEST_F(GraphAlgorithmsFixture, TSM_test_nVerts_from_result_struct)
 {
-  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/saleman21.txt"));
+  ASSERT_EQ(1, _g0->loadGraphFromFile("unit_test_files/saleman21.txt"));
+  // ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/saleman21.txt"));  
   size_t nVert=_g0->getVerticesNumber() + 1;
   TsmResult res = GraphAlgorithms::solveTravelingSalesmanProblem(*_g0);
   EXPECT_EQ(nVert, res.vertices.size());
@@ -60,15 +61,17 @@ TEST_F(GraphAlgorithmsFixture, TSM_test_nVerts_from_result_struct)
 
 TEST_F(GraphAlgorithmsFixture, TSM_test_result_distance_gt_zero)
 {
-  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/saleman21.txt"));
+  ASSERT_EQ(1, _g0->loadGraphFromFile("unit_test_files/saleman21.txt"));
+  // ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/saleman21.txt"));
   TsmResult res = GraphAlgorithms::solveTravelingSalesmanProblem(*_g0);
   EXPECT_GT(res.distance,  0);
 }
 
 TEST_F(GraphAlgorithmsFixture, TSM_test_errorFlag)
 {
-  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/salemanError1.txt"));
-  
+  ASSERT_EQ(1, _g0->loadGraphFromFile("unit_test_files/salemanError1.txt"));
+  // ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/salemanError1.txt"));
+
   std::ofstream out("out.txt");
   std::streambuf *coutbuf= std::cout.rdbuf();//save old buf
   std::cout.rdbuf(out.rdbuf());//redirect std::cout to out.txt!
@@ -86,8 +89,9 @@ TEST_F(GraphAlgorithmsFixture, TSM_test_errorFlag)
 
 TEST_F(GraphAlgorithmsFixture, MinOstovTree_check_resultMatrix)
 {
-  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima7.txt"));
-  
+  ASSERT_EQ(1, _g0->loadGraphFromFile("unit_test_files/prima7.txt"));
+  // ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima7.txt"));
+
   std::vector<std::vector<int>> test;
   test.resize(_g0->getVerticesNumber());
   test[0]={0, 0, 0, 0, 5, 1, 0};
@@ -100,10 +104,9 @@ TEST_F(GraphAlgorithmsFixture, MinOstovTree_check_resultMatrix)
 
   EXPECT_EQ(test, GraphAlgorithms::getLeastSpanningTree(*_g0));
   
-
   //-----------------------------------------------------------
-  
-  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima5.txt"));
+  ASSERT_EQ(1, _g0->loadGraphFromFile("unit_test_files/prima5.txt"));
+  // ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima5.txt"));
   
   std::vector<std::vector<int>> test2;
   test2.resize(_g0->getVerticesNumber());
@@ -116,7 +119,8 @@ TEST_F(GraphAlgorithmsFixture, MinOstovTree_check_resultMatrix)
   EXPECT_EQ(test2, GraphAlgorithms::getLeastSpanningTree(*_g0));
 
   //-----------------------------------------------------------
-  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima4.txt"));
+  ASSERT_EQ(1, _g0->loadGraphFromFile("unit_test_files/prima4.txt"));
+  // ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima4.txt"));
   
   std::vector<std::vector<int>> test3;
   test3.resize(_g0->getVerticesNumber());
