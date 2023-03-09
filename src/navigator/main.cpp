@@ -57,7 +57,7 @@ int main()
   Graph graph;
   
 
-  if (graph.loadGraphFromFile("../unit_test_files/prima4.txt") < 0)
+  if (graph.loadGraphFromFile("../unit_test_files/saleman21.txt") < 0)
 	  return -1;
 //   printf("matrix from file:\n\n");
 //   printGraphMatrix(graph);
@@ -65,13 +65,13 @@ int main()
 //   printArray(array, graph.getVerticesNumber());
 //   graph.exportGraphToDot("../unit_test_files/proba1.dot");
 
-  std::vector<std::vector<int>> mtrxOstTree = GraphAlgorithms::getLeastSpanningTree(graph);
-  printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
+//   std::vector<std::vector<int>> mtrxOstTree = GraphAlgorithms::getLeastSpanningTree(graph);
+//   printMatrixVector(mtrxOstTree, graph.getVerticesNumber());
   
-//   TsmResult tsm;
-//   tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
-// extern bool g_errorGraphTsm;
-// 	if (g_errorGraphTsm == 0)
-// 		printTsmRes(tsm);
+  TsmResult tsm;
+  tsm = GraphAlgorithms::solveTravelingSalesmanProblem(graph);
+extern bool g_errorGraphTsm;
+	if (g_errorGraphTsm == 0)
+		printTsmRes(tsm);
 	return 1;
 }

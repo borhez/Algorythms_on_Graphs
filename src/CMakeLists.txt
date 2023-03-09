@@ -8,7 +8,7 @@ add_subdirectory(test/googletest-main) # почему именно subdirectory
 include_directories(test/googletest-main/googletest/include)
 
 add_executable(Navigator
-#        navigator/main.cpp
+        navigator/main.cpp
         navigator/s21_graph/s21_graph.cpp navigator/s21_graph/s21_graph.h
         navigator/matrix/Matrix.cpp navigator/matrix/Matrix.hpp
         navigator/s21_graph/s21_graph_algorithms.h navigator/s21_graph/s21_graph_algorithms.cpp

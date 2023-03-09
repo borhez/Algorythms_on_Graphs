@@ -400,6 +400,11 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 		restartAnts(ants, dataStruct);
 	}
 	ret.distance=dataStruct.bestDistance;
+	for (size_t i = 0; i < dataStruct.bestWay.size(); i++)
+	{
+		dataStruct.bestWay[i] += 1;
+	}
+	
 	ret.vertices.assign(dataStruct.bestWay.begin(), dataStruct.bestWay.end());
 	return ret;
 }
