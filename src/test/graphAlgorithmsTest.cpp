@@ -83,3 +83,47 @@ TEST_F(GraphAlgorithmsFixture, TSM_test_errorFlag)
 
   EXPECT_EQ(test, "Error Graph\n");
 }
+
+TEST_F(GraphAlgorithmsFixture, MinOstovTree_check_resultMatrix)
+{
+  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima7.txt"));
+  
+  std::vector<std::vector<int>> test;
+  test.resize(_g0->getVerticesNumber());
+  test[0]={0, 0, 0, 0, 5, 1, 0};
+  test[1]={0, 0, 0, 0, 0, 0, 0};
+  test[2]={0, 3, 0, 0, 0, 0, 0};
+  test[3]={0, 0, 0, 0, 0, 0, 0};
+  test[4]={0, 0, 0, 0, 0, 0, 1};
+  test[5]={0, 0, 1, 1, 0, 0, 0};
+  test[6]={0, 0, 0, 0, 0, 0, 0};
+
+  EXPECT_EQ(test, GraphAlgorithms::getLeastSpanningTree(*_g0));
+  
+
+  //-----------------------------------------------------------
+  
+  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima5.txt"));
+  
+  std::vector<std::vector<int>> test2;
+  test2.resize(_g0->getVerticesNumber());
+  test2[0]={0, 0, 0, 2, 5};
+  test2[1]={0, 0, 0, 0, 0};
+  test2[2]={0, 3, 0, 0, 0};
+  test2[3]={0, 0, 1, 0, 0};
+  test2[4]={0, 0, 0, 0, 0};
+
+  EXPECT_EQ(test2, GraphAlgorithms::getLeastSpanningTree(*_g0));
+
+  //-----------------------------------------------------------
+  ASSERT_EQ(1, _g0->loadGraphFromFile("/home/sshield/projects/sber/navigator/curGit/src/cmake-build-debug/unit_test_files/prima4.txt"));
+  
+  std::vector<std::vector<int>> test3;
+  test3.resize(_g0->getVerticesNumber());
+  test3[0]={0, 0, 0, 2};
+  test3[1]={0, 0, 0, 0};
+  test3[2]={0, 0, 0, 0};
+  test3[3]={0, 3, 7, 0};
+
+  EXPECT_EQ(test3, GraphAlgorithms::getLeastSpanningTree(*_g0));
+}
