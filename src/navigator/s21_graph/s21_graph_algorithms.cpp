@@ -356,7 +356,7 @@ TsmResult GraphAlgorithms::solveTravelingSalesmanProblem(Graph &graph)
 	g_errorGraphTsm = 0;
 	if (errorGraph(graph, nVerts))
 	{
-		printf("Error Graph\n");
+		std::cout << "Error Graph" << std::endl;
 		g_errorGraphTsm = 1;
 		return ret;
 	}
